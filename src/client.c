@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:40 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/09/29 15:05:26 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/09/29 15:24:00 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	main(int argc, char **argv)
 {
 	int		pid;
 	char	*message;
+
 	if (argc == 3)
 	{
 		pid = ft_atoi(argv[1]);
