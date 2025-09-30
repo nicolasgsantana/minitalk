@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/09/29 15:50:57 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/09/30 12:04:45 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	print_byte(char bit)
 	static char	current_char = 0;
 
 	if (bit_count < 8)
-		current_char = (current_char ^ bit) << 1;
+		current_char = (current_char << 1) | bit;
 	bit_count++;
 	if (bit_count >= 8)
 	{
-		ft_printf("%c", current_char);
+		write(1, &current_char, 1);
 		bit_count = 0;
 		current_char = 0;
 	}
