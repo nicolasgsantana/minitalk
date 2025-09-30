@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/09/30 12:04:45 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/09/30 17:34:20 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ void	signal_handler(int signum)
 
 int	main(void)
 {
-	ft_printf("Server started\n");
-	ft_printf("PID: %d\n", getpid());
+	ft_printf("Server started\nPID: %d\n", getpid());
 	signal(SIGUSR1, signal_handler);
 	signal(SIGUSR2, signal_handler);
 	while (1)

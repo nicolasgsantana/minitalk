@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:40 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/09/30 12:02:34 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/09/30 17:37:14 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	send_bits(char *message, int pid)
 			if (bit == 1)
 				kill(pid, SIGUSR2);
 			i--;
-			usleep(25);
+			usleep(50);
 		}
 		message++;
 	}
@@ -45,7 +45,6 @@ int	main(int argc, char **argv)
 	{
 		pid = ft_atoi(argv[1]);
 		message = argv[2];
-		ft_printf("Message '%s' sent to pid %d\n", message, pid);
 		send_bits(message, pid);
 	}
 	return (0);
