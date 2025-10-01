@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/01 11:02:20 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/01 11:52:13 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ void	signal_handler(int signum, siginfo_t *info, void *context)
 
 int	main(void)
 {
-	ft_printf("Server started\nPID: %d\n", getpid());
-	struct sigaction sa;
+	struct sigaction	sa;
+
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART | SA_SIGINFO;
 	sa.sa_sigaction = signal_handler;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
+	ft_printf("Server started\nPID: %d\n", getpid());
 	while (1)
 	{
 		pause();
