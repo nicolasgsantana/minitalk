@@ -6,13 +6,15 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 12:10:39 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/01 12:11:02 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/01 14:37:07 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	print_byte(char bit)
+int last_client_pid;
+
+void	print_byte(char bit, siginfo_t *info)
 {
 	static int	bit_count = 0;
 	static char	current_char = 0;
@@ -22,6 +24,11 @@ void	print_byte(char bit)
 	bit_count++;
 	if (bit_count >= 8)
 	{
+		if (!current_char)
+		{
+			kill(info->si_pid, SIGUSR1);
+			current_char = '\n';
+		}
 		write(1, &current_char, 1);
 		bit_count = 0;
 		current_char = 0;
@@ -30,12 +37,11 @@ void	print_byte(char bit)
 
 void	signal_handler(int signum, siginfo_t *info, void *context)
 {
-	(void)info;
 	(void)context;
 	if (signum == SIGUSR1)
-		print_byte(0);
+		print_byte(0, info);
 	else if (signum == SIGUSR2)
-		print_byte(1);
+		print_byte(1, info);
 }
 
 int	main(void)
