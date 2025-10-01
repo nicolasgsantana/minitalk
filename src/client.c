@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:40 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/09/30 17:37:14 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/01 11:45:51 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	send_bits(char *message, int pid)
 			if (bit == 1)
 				kill(pid, SIGUSR2);
 			i--;
-			usleep(50);
+			usleep(BIT_DELAY);
 		}
 		message++;
 	}
