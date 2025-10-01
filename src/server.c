@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/09/30 17:34:20 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/01 11:02:20 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ void	print_byte(char bit)
 	}
 }
 
-void	signal_handler(int signum)
+void	signal_handler(int signum, siginfo_t *info, void *context)
 {
+	(void)info;
+	(void)context;
 	if (signum == SIGUSR1)
 		print_byte(0);
 	else if (signum == SIGUSR2)
@@ -39,8 +41,12 @@ void	signal_handler(int signum)
 int	main(void)
 {
 	ft_printf("Server started\nPID: %d\n", getpid());
-	signal(SIGUSR1, signal_handler);
-	signal(SIGUSR2, signal_handler);
+	struct sigaction sa;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART | SA_SIGINFO;
+	sa.sa_sigaction = signal_handler;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
 	{
 		pause();
