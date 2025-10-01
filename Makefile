@@ -15,9 +15,6 @@ SRC_CLIENT = $(SRC_DIR)/client.c
 SRC_SERVER = $(SRC_DIR)/server.c
 HEADER = $(INC_DIR)/minitalk.h
 
-SRC_CLIENT_BONUS = $(SRC_DIR)/client_bonus.c
-SRC_SERVER_BONUS = $(SRC_DIR)/server_bonus.c
-
 all: $(CLIENT) $(SERVER)
 
 $(CLIENT): $(HEADER) $(SRC_CLIENT) $(LIBFT)
@@ -38,15 +35,6 @@ fclean: clean
 	rm -f $(SERVER)
 	$(MAKE) -C $(LIBFT_DIR) fclean
 
-re: fclean all
+re: fclean all	
 
-_bonus_client:: $(HEADER) $(SRC_CLIENT_BONUS) $(LIBFT)
-	$(CC) $(CFLAGS) $(INCLUDES) $(SRC_CLIENT_BONUS) $(LIBS) -o $(CLIENT)
-
-_bonus_server:: $(HEADER) $(SRC_SERVER_BONUS) $(LIBFT)
-	$(CC) $(CFLAGS) $(INCLUDES) $(SRC_SERVER_BONUS) $(LIBS) -o $(SERVER)
-
-bonus: $(LIBFT) $(CLIENT) $(SERVER) _bonus_server _bonus_client
-	
-
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re
