@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/02 10:45:12 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/02 13:18:21 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ void	concat_message(char new_char)
 	char		*temp;
 	int			i;
 
-	if (!new_char)
+	if (!new_char && message[0])
 	{
-		ft_printf("%s\n", message);
+		ft_printf("%s", message);
 		free(message);
 		message = "";
 		return ;
