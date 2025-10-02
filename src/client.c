@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nicolasgsantana <nicolasgsantana@studen    +#+  +:+       +#+        */
+/*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:40 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/01 17:43:35 by nicolasgsan      ###   ########.fr       */
+/*   Updated: 2025/10/02 10:44:45 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	send_null_byte(int pid)
 		kill(pid, SIGUSR1);
 		usleep(BIT_DELAY);
 		i++;
-	}	
+	}
 }
 
 void	send_bits(char *message, int pid)
@@ -60,8 +60,8 @@ void	signal_handler(int signum, siginfo_t *info, void *context)
 
 int	main(int argc, char **argv)
 {
-	int		pid;
-	char	*message;
+	int					pid;
+	char				*message;
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);

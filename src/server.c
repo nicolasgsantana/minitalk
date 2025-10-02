@@ -3,16 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nicolasgsantana <nicolasgsantana@studen    +#+  +:+       +#+        */
+/*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/01 17:44:14 by nicolasgsan      ###   ########.fr       */
+/*   Updated: 2025/10/02 10:45:12 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	print_byte(char bit, siginfo_t *info)
+void	concat_message(char new_char)
+{
+	static char	*message = "";
+	char		*temp;
+	int			i;
+
+	if (!new_char)
+	{
+		ft_printf("%s\n", message);
+		free(message);
+		message = "";
+		return ;
+	}
+	temp = message;
+	message = ft_calloc(sizeof(char), ft_strlen(message) + 2);
+	i = 0;
+	while (temp[i])
+	{
+		message[i] = temp[i];
+		i++;
+	}
+	if (temp[0])
+		free(temp);
+	message[i] = new_char;
+}
+
+void	get_byte(char bit, siginfo_t *info)
 {
 	static int	bit_count = 0;
 	static char	current_char = 0;
@@ -23,11 +49,8 @@ void	print_byte(char bit, siginfo_t *info)
 	if (bit_count >= 8)
 	{
 		if (!current_char)
-		{
 			kill(info->si_pid, SIGUSR1);
-			current_char = '\n';
-		}
-		write(1, &current_char, 1);
+		concat_message(current_char);
 		bit_count = 0;
 		current_char = 0;
 	}
@@ -37,9 +60,9 @@ void	signal_handler(int signum, siginfo_t *info, void *context)
 {
 	(void)context;
 	if (signum == SIGUSR1)
-		print_byte(0, info);
+		get_byte(0, info);
 	else if (signum == SIGUSR2)
-		print_byte(1, info);
+		get_byte(1, info);
 }
 
 int	main(void)
