@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:40 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/02 10:44:45 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/04 16:19:27 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,42 +20,45 @@ void	send_null_byte(int pid)
 	while (i < 8)
 	{
 		kill(pid, SIGUSR1);
-		usleep(BIT_DELAY);
 		i++;
 	}
 }
 
-void	send_bits(char *message, int pid)
+void	send_bits(char *msg, int pid)
 {
-	int				i;
-	char			mask;
-	unsigned char	bit;
+	static int			bit_count = 7;
+	char				mask;
+	static const char	*message;
+	unsigned char		bit;
 
-	while (*message)
+	if (msg)
+		message = msg;
+	if (*message)
 	{
-		i = 7;
-		while (i >= 0)
-		{
-			mask = 1 << i;
-			bit = (unsigned char)(((unsigned char)*message & mask) >> i);
-			if (bit == 0)
-				kill(pid, SIGUSR1);
-			if (bit == 1)
-				kill(pid, SIGUSR2);
-			i--;
-			usleep(BIT_DELAY);
-		}
+		mask = 1 << bit_count;
+		bit = (unsigned char)(((unsigned char)*message & mask) >> bit_count);
+		if (bit == 0)
+			kill(pid, SIGUSR1);
+		if (bit == 1)
+			kill(pid, SIGUSR2);
+		bit_count--;
+	}
+	else
+		send_null_byte(pid);
+	if (bit_count < 0)
+	{
+		bit_count = 7;
 		message++;
 	}
-	send_null_byte(pid);
 }
 
 void	signal_handler(int signum, siginfo_t *info, void *context)
 {
-	(void)info;
 	(void)context;
-	if (signum == SIGUSR1)
+	if (signum == SIGUSR2)
 		ft_printf("Server confirmation received.\n");
+	if (signum == SIGUSR1)
+		send_bits(NULL, info->si_pid);
 }
 
 int	main(int argc, char **argv)
@@ -65,14 +68,17 @@ int	main(int argc, char **argv)
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
+	sa.sa_flags = SA_RESTART | SA_SIGINFO;
 	sa.sa_sigaction = signal_handler;
 	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	if (argc == 3)
 	{
 		pid = ft_atoi(argv[1]);
 		message = argv[2];
 		send_bits(message, pid);
+		while (1)
+			pause();
 	}
 	return (0);
 }

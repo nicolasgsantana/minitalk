@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/04 15:20:16 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/04 15:41:59 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	concat_message(char new_char)
 {
 	static char	*message = "";
 	char		*temp;
-	int			i;
 
 	if (!new_char && message[0])
 	{
@@ -25,8 +24,13 @@ void	concat_message(char new_char)
 		message = "";
 		return ;
 	}
+	if (!message[0])
+	{
+		ft_strjoin(message, &new_char);
+		return ;
+	}
 	temp = message;
-	ft_strjoin(message, new_char);
+	ft_strjoin(message, &new_char);
 	free(temp);
 }
 
@@ -41,11 +45,12 @@ void	get_byte(char bit, siginfo_t *info)
 	if (bit_count >= 8)
 	{
 		if (!current_char)
-			kill(info->si_pid, SIGUSR1);
+			kill(info->si_pid, SIGUSR2);
 		concat_message(current_char);
 		bit_count = 0;
 		current_char = 0;
 	}
+	kill(info->si_pid, SIGUSR1);
 }
 
 void	signal_handler(int signum, siginfo_t *info, void *context)
