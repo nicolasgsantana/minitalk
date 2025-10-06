@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/04 15:20:16 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/06 16:44:27 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,24 @@
 
 void	concat_message(char new_char)
 {
-	static char	*message = "";
+	static char	*message = NULL;
 	char		*temp;
-	int			i;
 
-	if (!new_char && message[0])
+	if (!new_char)
 	{
 		ft_printf("%s", message);
 		free(message);
-		message = "";
+		message = NULL;
 		return ;
 	}
-	temp = message;
-	ft_strjoin(message, new_char);
-	free(temp);
+	if (!message)
+		message = ft_strdup(&new_char);
+	else
+	{
+		temp = message;
+		message = ft_strjoin(message, &new_char);
+		free(temp);
+	}
 }
 
 void	get_byte(char bit, siginfo_t *info)
