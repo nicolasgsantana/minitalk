@@ -35,6 +35,8 @@ fclean: clean
 	rm -f $(SERVER)
 	$(MAKE) -C $(LIBFT_DIR) fclean
 
-re: fclean all	
+re: fclean all
+
+bonus: all
 
 .PHONY: all clean fclean re
