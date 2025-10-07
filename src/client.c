@@ -6,13 +6,13 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:40 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/07 15:35:41 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/07 16:32:46 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-t_client	g_client;
+volatile t_client	g_client;
 
 void	parse_client(int argc, char **argv)
 {
@@ -76,7 +76,7 @@ int	main(int argc, char **argv)
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
-	sa.sa_sigaction = signal_handler;
+	sa.sa_handler = signal_handler;
 	sigaction(SIGUSR1, &sa, NULL);
 	parse_client(argc, argv);
 	send_bit();

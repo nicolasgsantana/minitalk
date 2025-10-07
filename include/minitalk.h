@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:34 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/07 15:59:48 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/07 16:31:37 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # include "libft.h"
 # include <signal.h>
 
-# define INPUT_ERR = "Invalid Input.\nUsage:\n\t./client [server_pid] [message]\n"
-# define PID_ERR = "Operation not permitted with current PID.\n"
+# define INPUT_ERR "Invalid Input.\nUsage:\n\t./client [server_pid] [message]\n"
+# define PID_ERR "Operation not permitted with current PID.\n"
 
 typedef struct	s_client
 {

@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/07 16:22:54 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/07 16:33:06 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void	write_byte(char bit)
 	g_server.byte = (g_server.byte << 1) | bit;
 	g_server.bit_count++;
 	kill(g_server.client_pid, SIGUSR1);
-	if (bit_count == 8)
+	if (g_server.bit_count == 8)
 	{
-		if (!byte)
+		if (!g_server.byte)
 		{
-			write(STDOUT_FILENO, '\n', 1);
+			write(STDOUT_FILENO, "\n", 1);
 			kill(g_server.client_pid, SIGUSR2);
 			g_server.client_pid = 0;
 		}
