@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/07 10:55:47 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/06 16:44:27 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	concat_message(char new_char)
 {
 	static char	*message = NULL;
 	char		*temp;
-	char		*c;
 
 	if (!new_char)
 	{
@@ -29,11 +28,9 @@ void	concat_message(char new_char)
 		message = ft_strdup(&new_char);
 	else
 	{
-		c = ft_strdup(&new_char);
 		temp = message;
-		message = ft_strjoin(message, c);
+		message = ft_strjoin(message, &new_char);
 		free(temp);
-		free(c);
 	}
 }
 
@@ -75,6 +72,8 @@ int	main(void)
 	sigaction(SIGUSR2, &sa, NULL);
 	ft_printf("Server started\nPID: %d\n", getpid());
 	while (1)
+	{
 		pause();
+	}
 	return (0);
 }
