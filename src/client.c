@@ -6,73 +6,82 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:40 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/06 16:44:26 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/07 18:15:47 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	send_null_byte(int pid)
-{
-	int	i;
+volatile t_client	g_client;
 
-	i = 0;
-	while (i < 8)
+void	parse_client(int argc, char **argv)
+{
+	int		pid;
+
+	if (argc != 3)
 	{
-		kill(pid, SIGUSR1);
-		usleep(BIT_DELAY);
-		i++;
+		ft_putstr_fd(INPUT_ERR, STDERR_FILENO);
+		exit(1);
 	}
+	pid = ft_atoi(argv[1]);
+	if (pid <= 1 || pid == getpid())
+	{
+		ft_putstr_fd(PID_ERR, STDERR_FILENO);
+		exit(1);
+	}
+	g_client.server_pid = pid;
+	g_client.msg =	(unsigned char *)argv[2];
+	g_client.bit_pos = 7;
+	g_client.char_pos = 0;
 }
 
-void	send_bits(char *message, int pid)
+void	send_bit(void)
 {
-	int				i;
 	char			mask;
 	unsigned char	bit;
 
-	while (*message)
+	if (g_client.msg[g_client.char_pos])
 	{
-		i = 7;
-		while (i >= 0)
+		mask = 1 << g_client.bit_pos;
+		bit = (g_client.msg[g_client.char_pos] & mask) >> g_client.bit_pos;
+		if (bit == 0)
+			kill(g_client.server_pid, SIGUSR1);
+		if (bit == 1)
+			kill(g_client.server_pid, SIGUSR2);
+		g_client.bit_pos--;
+		if (g_client.bit_pos < 0)
 		{
-			mask = 1 << i;
-			bit = (unsigned char)(((unsigned char)*message & mask) >> i);
-			if (bit == 0)
-				kill(pid, SIGUSR1);
-			if (bit == 1)
-				kill(pid, SIGUSR2);
-			i--;
-			usleep(BIT_DELAY);
+			g_client.bit_pos = 7;
+			g_client.char_pos++;
 		}
-		message++;
 	}
-	send_null_byte(pid);
+	else
+		kill(g_client.server_pid, SIGUSR1);
 }
 
-void	signal_handler(int signum, siginfo_t *info, void *context)
+void	signal_handler(int signum)
 {
-	(void)info;
-	(void)context;
-	if (signum == SIGUSR1)
-		ft_printf("Server confirmation received.\n");
+	if (signum == SIGUSR1) 
+		send_bit();// server ready for next bit
+	if (signum == SIGUSR2)
+	{
+		ft_printf("Server confirmation received.\n"); //TODO: BETTER MESSAGE
+		exit(0);
+	}		
 }
 
 int	main(int argc, char **argv)
 {
-	int					pid;
-	char				*message;
 	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
-	sa.sa_sigaction = signal_handler;
+	sa.sa_handler = signal_handler;
 	sigaction(SIGUSR1, &sa, NULL);
-	if (argc == 3)
-	{
-		pid = ft_atoi(argv[1]);
-		message = argv[2];
-		send_bits(message, pid);
-	}
+	sigaction(SIGUSR2, &sa, NULL);
+	parse_client(argc, argv);
+	send_bit();
+	while (1)
+		pause();
 	return (0);
 }

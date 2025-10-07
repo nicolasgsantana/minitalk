@@ -6,59 +6,51 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/07 11:48:24 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/07 18:07:06 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	concat_message(char new_char)
-{
-	static char	*message = NULL;
-	char		*temp;
+t_server	g_server;
 
-	if (!new_char)
-	{
-		ft_printf("%s", message);
-		free(message);
-		message = NULL;
-		return ;
-	}
-	if (!message)
-		message = ft_strdup(&new_char);
-	else
-	{
-		temp = message;
-		message = ft_strjoin(message, &new_char);
-		free(temp);
-	}
+void	init_server(void)
+{
+	g_server.client_pid = 0;
+	g_server.bit_count = 0;
+	g_server.byte = 0;
 }
 
-void	get_byte(char bit, siginfo_t *info)
+void	write_byte(char bit)
 {
-	static int	bit_count = 0;
-	static char	current_char = 0;
-
-	if (bit_count < 8)
-		current_char = (current_char << 1) | bit;
-	bit_count++;
-	if (bit_count >= 8)
+	g_server.byte = (g_server.byte << 1) | bit;
+	g_server.bit_count++;
+	if (g_server.bit_count == 8)
 	{
-		if (!current_char)
-			kill(info->si_pid, SIGUSR1);
-		concat_message(current_char);
-		bit_count = 0;
-		current_char = 0;
+		if (!g_server.byte)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			kill(g_server.client_pid, SIGUSR2);
+			init_server();
+			return ;
+		}
+		else
+			write(STDOUT_FILENO, &g_server.byte, 1);
+		g_server.bit_count = 0;
+		g_server.byte = 0;
 	}
+	kill(g_server.client_pid, SIGUSR1);
 }
 
 void	signal_handler(int signum, siginfo_t *info, void *context)
 {
 	(void)context;
+	if (g_server.client_pid == 0)
+		g_server.client_pid = info->si_pid;
 	if (signum == SIGUSR1)
-		get_byte(0, info);
-	else if (signum == SIGUSR2)
-		get_byte(1, info);
+		write_byte(0);
+	if (signum == SIGUSR2)
+		write_byte(1);
 }
 
 int	main(void)
@@ -71,6 +63,7 @@ int	main(void)
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	ft_printf("Server started\nPID: %d\n", getpid());
+	init_server();
 	while (1)
 		pause();
 	return (0);
