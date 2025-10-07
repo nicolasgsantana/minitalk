@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:40 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/07 18:02:28 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/07 18:15:47 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	parse_client(int argc, char **argv)
 		exit(1);
 	}
 	g_client.server_pid = pid;
-	g_client.msg =	argv[2];
+	g_client.msg =	(unsigned char *)argv[2];
 	g_client.bit_pos = 7;
 	g_client.char_pos = 0;
 }

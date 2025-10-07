@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:34 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/07 16:31:37 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/07 18:14:30 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@
 
 typedef struct	s_client
 {
-	char	*msg;
-	int		server_pid;
-	int		bit_pos;
-	int		char_pos;
-}			t_client;
+	unsigned char	*msg;
+	int				server_pid;
+	int				bit_pos;
+	int				char_pos;
+}					t_client;
 
 typedef struct	s_server
 {
