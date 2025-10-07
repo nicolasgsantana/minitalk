@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/06 16:44:27 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/07 11:48:24 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ int	main(void)
 	sigaction(SIGUSR2, &sa, NULL);
 	ft_printf("Server started\nPID: %d\n", getpid());
 	while (1)
-	{
 		pause();
-	}
 	return (0);
 }
