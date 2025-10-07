@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:34 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/02 11:12:14 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/07 13:30:36 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,5 @@
 
 # include "libft.h"
 # include <signal.h>
-
-# define BIT_DELAY 500
 
 #endif

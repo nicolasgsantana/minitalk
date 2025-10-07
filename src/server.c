@@ -6,59 +6,19 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 11:59:35 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/07 11:48:24 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/07 13:35:36 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	concat_message(char new_char)
-{
-	static char	*message = NULL;
-	char		*temp;
-
-	if (!new_char)
-	{
-		ft_printf("%s", message);
-		free(message);
-		message = NULL;
-		return ;
-	}
-	if (!message)
-		message = ft_strdup(&new_char);
-	else
-	{
-		temp = message;
-		message = ft_strjoin(message, &new_char);
-		free(temp);
-	}
-}
-
-void	get_byte(char bit, siginfo_t *info)
-{
-	static int	bit_count = 0;
-	static char	current_char = 0;
-
-	if (bit_count < 8)
-		current_char = (current_char << 1) | bit;
-	bit_count++;
-	if (bit_count >= 8)
-	{
-		if (!current_char)
-			kill(info->si_pid, SIGUSR1);
-		concat_message(current_char);
-		bit_count = 0;
-		current_char = 0;
-	}
-}
-
 void	signal_handler(int signum, siginfo_t *info, void *context)
 {
 	(void)context;
 	if (signum == SIGUSR1)
-		get_byte(0, info);
+		//received a zero
 	else if (signum == SIGUSR2)
-		get_byte(1, info);
+		//received a one
 }
 
 int	main(void)
