@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:40 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/07 16:32:46 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/07 18:02:28 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	signal_handler(int signum)
 	if (signum == SIGUSR2)
 	{
 		ft_printf("Server confirmation received.\n"); //TODO: BETTER MESSAGE
-		exit (0);
+		exit(0);
 	}		
 }
 
@@ -78,6 +78,7 @@ int	main(int argc, char **argv)
 	sa.sa_flags = SA_RESTART;
 	sa.sa_handler = signal_handler;
 	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	parse_client(argc, argv);
 	send_bit();
 	while (1)
