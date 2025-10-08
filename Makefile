@@ -1,3 +1,7 @@
+GREEN  = \033[1;32m
+YELLOW = \033[1;33m
+RESET  = \033[0m
+
 CLIENT = client
 SERVER = server
 SRC_DIR = src
@@ -18,22 +22,25 @@ HEADER = $(INC_DIR)/minitalk.h
 all: $(CLIENT) $(SERVER)
 
 $(CLIENT): $(HEADER) $(SRC_CLIENT) $(LIBFT)
-	$(CC) $(CFLAGS) $(INCLUDES) $(SRC_CLIENT) $(LIBS) -o $(CLIENT)
+	@$(CC) $(CFLAGS) $(INCLUDES) $(SRC_CLIENT) $(LIBS) -o $(CLIENT)
+	@echo "$(GREEN)$(CLIENT) created$(RESET)"
 
 $(SERVER): $(HEADER) $(SRC_SERVER) $(LIBFT)
-	$(CC) $(CFLAGS) $(INCLUDES) $(SRC_SERVER) $(LIBS) -o $(SERVER)
+	@$(CC) $(CFLAGS) $(INCLUDES) $(SRC_SERVER) $(LIBS) -o $(SERVER)
+	@echo "$(GREEN)$(SERVER) created$(RESET)"
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR) all
+	@$(MAKE) -C $(LIBFT_DIR) all
 
 clean:
-	rm -f *.o
-	$(MAKE) -C $(LIBFT_DIR) clean
+	@$(MAKE) -C $(LIBFT_DIR) clean
 
-fclean: clean
-	rm -f $(CLIENT)
-	rm -f $(SERVER)
-	$(MAKE) -C $(LIBFT_DIR) fclean
+fclean:
+	@rm -f $(CLIENT)
+	@echo "$(YELLOW)$(CLIENT) deleted$(RESET)"
+	@rm -f $(SERVER)
+	@echo "$(YELLOW)$(SERVER) deleted$(RESET)"
+	@$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
