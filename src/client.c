@@ -6,7 +6,7 @@
 /*   By: nde-sant <nde-sant@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:40 by nde-sant          #+#    #+#             */
-/*   Updated: 2025/10/08 10:32:32 by nde-sant         ###   ########.fr       */
+/*   Updated: 2025/10/08 11:00:24 by nde-sant         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	parse_client(int argc, char **argv)
 		exit(1);
 	}
 	g_client.server_pid = pid;
-	g_client.msg =	(unsigned char *)argv[2];
+	g_client.msg = (unsigned char *)argv[2];
 	g_client.bit_pos = 7;
 	g_client.char_pos = 0;
 }
@@ -61,7 +61,7 @@ void	send_bit(void)
 
 void	signal_handler(int signum)
 {
-	if (signum == SIGUSR1) 
+	if (signum == SIGUSR1)
 		send_bit();
 	if (signum == SIGUSR2)
 	{
